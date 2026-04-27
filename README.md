@@ -13,6 +13,10 @@
 
 검색 키워드: 네이버 금융 API, Naver Finance API, 네이버 증권 API, 네이버페이 증권 API, 한국 주식 시세 API, KOSPI 시세, KOSDAQ 시세, 국내 주식 차트, 종목 뉴스, 공시, 환율, 시장지표, Agent Skill.
 
+## 관련 Skill
+
+- 새로운 네이버증권 Beta 페이지(`stock.naver.com`)는 [dd3ok/naverstock-api-skills](https://github.com/dd3ok/naverstock-api-skills)를 사용하세요. 해당 저장소는 stock.naver.com 공개 read-only 웹 API와 국내 주식 시세, 업종/테마/ETF/뉴스/리서치 데이터를 다룹니다.
+
 ## 지원 범위
 
 - 국내 종목 요약, 시세, 주요 지표, 차트, 투자자별 매매 동향

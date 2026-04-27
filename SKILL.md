@@ -9,6 +9,8 @@ description: Use when a user asks to inspect, catalog, or call unofficial read-o
 
 공개 read-only Naver Finance/Npay Stock 시장 데이터를 다룰 때 이 skill을 사용합니다. 요청을 처리할 수 있으면 mobile JSON endpoint를 우선 사용하고, legacy 메뉴는 PC HTML table로 fallback하며, Wisereport는 Naver 종목분석 iframe을 통해 노출되는 기업분석/재무 page에만 사용합니다.
 
+새로운 네이버증권 Beta 페이지(`stock.naver.com`) 관련 작업은 별도 skill인 [dd3ok/naverstock-api-skills](https://github.com/dd3ok/naverstock-api-skills)를 사용합니다.
+
 ## 사용하지 않는 경우
 
 - 공식 broker API, trading API, 보장된 realtime market data feed처럼 사용하지 않습니다.
