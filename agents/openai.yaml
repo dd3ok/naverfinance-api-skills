@@ -1,4 +1,4 @@
 interface:
-  display_name: "NaverFinance Web API"
-  short_description: "비공식 read-only NaverFinance/Npay Stock 공개 데이터"
-  default_prompt: "$naverfinance-web-api를 사용해 공개 NaverFinance/Npay Stock 페이지에서 간단한 시세, 차트, 뉴스, 시장 랭킹, market-index 표를 조회합니다."
+  display_name: "Naver Finance Web API"
+  short_description: "비공식 read-only Naver Finance/Npay Stock 공개 데이터"
+  default_prompt: "$naverfinance-web-api를 사용해 공개 Naver Finance/Npay Stock 페이지에서 간단한 시세, 차트, 뉴스, 시장 랭킹, market-index 표를 조회합니다."

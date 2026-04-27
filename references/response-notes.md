@@ -1,6 +1,6 @@
 # 응답 메모
 
-- 데이터 출처가 공식 API가 아니라 공개 NaverFinance/Npay Stock web page와 undocumented web endpoint임을 분명히 합니다.
+- 데이터 출처가 공식 API가 아니라 공개 Naver Finance/Npay Stock web page와 undocumented web endpoint임을 분명히 합니다.
 - 가격 데이터에는 값이 있으면 `localTradedAt`, market status, response timestamp를 함께 표시합니다.
 - `PREOPEN`, `TRADING`, `UNCHANGED` 같은 Naver status 문자열은 보존합니다. 필요할 때만 짧은 한국어/영어 설명을 덧붙입니다.
 - mobile integration payload는 전체 dump를 피하고 `totalInfos`, `dealTrendInfos`, `researches`, `industryCompareInfo`, `consensusInfo`, `irScheduleInfo`를 나누어 요약합니다.

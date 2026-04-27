@@ -1,13 +1,13 @@
 ---
 name: naverfinance-web-api
-description: Use when a user asks to inspect, catalog, or call unofficial read-only NaverFinance/네이버증권/네이버 금융 or Npay Stock/네이버페이 증권 public web data for stocks/주식 정보, 시세, quotes, charts, financials, rankings, investor trends, news, 공시, IPOs, 환율, commodities, indices, or finance.naver.com and m.stock.naver.com network calls/네트워크 호출.
+description: Use when a user asks to inspect, catalog, or call unofficial read-only Naver Finance/네이버증권/네이버 금융 or Npay Stock/네이버페이 증권 public web data for stocks/주식 정보, 시세, quotes, charts, financials, rankings, investor trends, news, 공시, IPOs, 환율, commodities, indices, or finance.naver.com and m.stock.naver.com network calls/네트워크 호출.
 ---
 
-# NaverFinance Web API
+# Naver Finance Web API
 
 ## 개요
 
-공개 read-only NaverFinance/Npay Stock 시장 데이터를 다룰 때 이 skill을 사용합니다. 요청을 처리할 수 있으면 mobile JSON endpoint를 우선 사용하고, legacy 메뉴는 PC HTML table로 fallback하며, Wisereport는 Naver 종목분석 iframe을 통해 노출되는 기업분석/재무 page에만 사용합니다.
+공개 read-only Naver Finance/Npay Stock 시장 데이터를 다룰 때 이 skill을 사용합니다. 요청을 처리할 수 있으면 mobile JSON endpoint를 우선 사용하고, legacy 메뉴는 PC HTML table로 fallback하며, Wisereport는 Naver 종목분석 iframe을 통해 노출되는 기업분석/재무 page에만 사용합니다.
 
 ## 사용하지 않는 경우
 
@@ -101,9 +101,9 @@ python3 scripts/financials.py --code 005930 --kind overview
 - `Use $naverfinance-web-api to get a compact quote and summary for 005930.`
 - `Use $naverfinance-web-api to fetch daily candles for 005930 between 20260420 and 20260427.`
 - `Use $naverfinance-web-api to fetch KOSPI index basic data and chart rows.`
-- `Use $naverfinance-web-api to list KOSPI market-cap leaders from NaverFinance.`
-- `Use $naverfinance-web-api to fetch all NaverFinance domestic market menu rows for 급등, 거래량 급증, NXT, investor trend, and foreign buy rankings.`
-- `Use $naverfinance-web-api to inspect NaverFinance network calls for a public stock-ranking page.`
+- `Use $naverfinance-web-api to list KOSPI market-cap leaders from Naver Finance.`
+- `Use $naverfinance-web-api to fetch all Naver Finance domestic market menu rows for 급등, 거래량 급증, NXT, investor trend, and foreign buy rankings.`
+- `Use $naverfinance-web-api to inspect Naver Finance network calls for a public stock-ranking page.`
 
 더 많은 실행 예시는 [references/script-cookbook.md](references/script-cookbook.md)에 있습니다. Skill 선택과 안전 경계 smoke check는 [references/eval-prompts.md](references/eval-prompts.md)를 사용합니다.
 
@@ -117,4 +117,4 @@ python3 scripts/financials.py --code 005930 --kind overview
 - undocumented API는 unstable로 취급하고 의존하기 전에 현재 browser/page traffic으로 다시 검증합니다.
 - 같은 데이터가 양쪽에 있으면 PC table scraping보다 공개 mobile JSON을 우선합니다.
 - PC HTML table은 공개 market-data menu에만 사용하고 blank spacer row와 EUC-KR page에 resilient하게 parsing합니다.
-- 사용자에게 답할 때 공식 API가 아니라 공개 NaverFinance/Npay Stock web page의 데이터임을 밝힙니다.
+- 사용자에게 답할 때 공식 API가 아니라 공개 Naver Finance/Npay Stock web page의 데이터임을 밝힙니다.
