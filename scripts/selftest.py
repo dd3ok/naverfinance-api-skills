@@ -1,0 +1,343 @@
+#!/usr/bin/env python3
+"""Validate the NaverFinance skill package shape and script basics."""
+
+from __future__ import annotations
+
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS = ROOT / "scripts"
+sys.path.insert(0, str(SCRIPTS))
+
+
+def main() -> int:
+    skill_md = ROOT / "SKILL.md"
+    content = skill_md.read_text(encoding="utf-8")
+    assert "[TODO" not in content, "SKILL.md still contains template TODOs"
+    assert re.search(r"^---\nname: naverfinance-web-api\n", content), "frontmatter name missing"
+    assert "description: Use when" in content, "description should be trigger-focused"
+    assert "Never call login" in content, "hard safety rules missing"
+
+    openai_yaml = (ROOT / "agents" / "openai.yaml").read_text(encoding="utf-8")
+    assert "$naverfinance-web-api" in openai_yaml, "default prompt must mention skill name"
+
+    for script in sorted((ROOT / "scripts").glob("*.py")):
+        if script.name in {"naverfinance_api.py", "selftest.py"}:
+            continue
+        result = subprocess.run(
+            [sys.executable, str(script), "--help"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, f"{script.name} --help failed: {result.stderr}"
+
+    test_front_json_rejects_error_payload()
+    test_theme_and_upjong_tables_are_selected()
+    test_group_rows_include_detail_links()
+    test_group_detail_stocks_are_selected()
+    test_etf_and_etn_api_rows_are_selected()
+    test_konex_api_rows_are_selected()
+    test_popular_search_menu_path_is_mapped()
+    test_new_sise_menu_paths_are_mapped()
+    test_investor_program_and_deal_tables_are_selected()
+    test_chart_dates_are_validated()
+    test_market_index_codes_route_to_pc_tables()
+    test_stock_trend_mobile_payload_is_selected()
+    test_research_relative_detail_links_are_attached()
+    test_news_search_requires_query_and_fetches_rows()
+
+    print("selftest ok")
+    return 0
+
+
+def test_front_json_rejects_error_payload() -> None:
+    import naverfinance_api
+
+    original = naverfinance_api.mobile_json
+    naverfinance_api.mobile_json = lambda *args, **kwargs: {
+        "isSuccess": False,
+        "detailCode": "FE-4000",
+        "message": "wrong code.",
+        "result": {},
+    }
+    try:
+        try:
+            naverfinance_api.front_json("/stock/domestic/basic", {"code": "999999"})
+        except RuntimeError as exc:
+            assert "FE-4000" in str(exc)
+            assert "wrong code" in str(exc)
+        else:
+            raise AssertionError("front_json should reject Naver error payloads")
+    finally:
+        naverfinance_api.mobile_json = original
+
+
+def test_theme_and_upjong_tables_are_selected() -> None:
+    import market_ranking
+
+    theme_fixture = """
+    <table class="type_1">
+      <tr><th>테마명</th><th>전일대비</th><th>최근3일등락률</th></tr>
+      <tr><td>상승</td><td>보합</td><td>하락</td></tr>
+      <tr><td>반도체</td><td>+1.20%</td><td>+3.40%</td></tr>
+    </table>
+    """
+    upjong_fixture = """
+    <table class="type_1">
+      <tr><th>업종명</th><th>전일대비</th><th>등락그래프</th></tr>
+      <tr><td>전체</td><td>상승</td><td>하락</td></tr>
+      <tr><td>전기전자</td><td>+1.20%</td><td>상승</td></tr>
+    </table>
+    """
+    original_pc_text = market_ranking.pc_text
+    original_front_json = market_ranking.front_json
+    market_ranking.pc_text = lambda path, *args, **kwargs: upjong_fixture if "sise_group" in path else theme_fixture
+    market_ranking.front_json = lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("skip"))
+    try:
+        theme = market_ranking.fetch_ranking("theme", market="kospi", page=1, limit=5)
+        upjong = market_ranking.fetch_ranking("upjong", market="kospi", page=1, limit=5)
+        assert theme["rows"] and theme["rows"][0]["테마명"] == "반도체"
+        assert upjong["rows"] and upjong["rows"][0]["업종명"] == "전기전자"
+    finally:
+        market_ranking.pc_text = original_pc_text
+        market_ranking.front_json = original_front_json
+
+
+def test_group_rows_include_detail_links() -> None:
+    import market_ranking
+
+    fixture = """
+    <table class="type_1">
+      <tr><th>그룹명</th><th>전일대비</th></tr>
+      <tr><td>전체</td><td>상승</td></tr>
+      <tr><td><a href="/sise/sise_group_detail.naver?type=group&no=103">신세계</a></td><td>+4.32%</td></tr>
+    </table>
+    """
+    original_pc_text = market_ranking.pc_text
+    market_ranking.pc_text = lambda *args, **kwargs: fixture
+    try:
+        payload = market_ranking.fetch_ranking("group", market="kospi", page=1, limit=5)
+        assert payload["rows"][0]["그룹명"] == "신세계"
+        assert payload["rows"][0]["detailNo"] == "103"
+        assert payload["rows"][0]["detailUrl"] == "/sise/sise_group_detail.naver?type=group&no=103"
+    finally:
+        market_ranking.pc_text = original_pc_text
+
+
+def test_group_detail_stocks_are_selected() -> None:
+    import market_ranking
+
+    fixture = """
+    <table class="type_5">
+      <tr><th>종목명</th><th>현재가</th><th>전일비</th><th>등락률</th><th>매수호가</th><th>매도호가</th><th>거래량</th><th>거래대금</th><th>전일거래량</th><th>토론</th></tr>
+      <tr><td></td></tr>
+      <tr><td><a href="/item/main.naver?code=069960">현대백화점</a></td><td>테마 편입 사유 현대백화점 설명</td><td>114,000</td><td>상승 15,500</td><td>+15.74%</td><td>99,300</td><td>99,700</td><td>59,178</td><td>6,558</td><td>87,278</td><td></td></tr>
+    </table>
+    """
+    original_pc_text = market_ranking.pc_text
+    market_ranking.pc_text = lambda *args, **kwargs: fixture
+    try:
+        payload = market_ranking.fetch_group_detail("theme", "318", page=1, limit=5)
+        row = payload["rows"][0]
+        assert row["종목명"] == "현대백화점"
+        assert row["code"] == "069960"
+        assert row["편입사유"].startswith("테마 편입 사유")
+        assert row["현재가"] == "114,000"
+    finally:
+        market_ranking.pc_text = original_pc_text
+
+
+def test_etf_and_etn_api_rows_are_selected() -> None:
+    import market_ranking
+
+    def fake_json(url, **kwargs):
+        if "etfItemList" in url:
+            return {"resultCode": "success", "result": {"etfItemList": [{"itemcode": "069500", "itemname": "KODEX 200"}]}}
+        return {"resultCode": "success", "result": {"etnItemList": [{"itemcode": "530036", "itemname": "삼성 인버스"}]}}
+
+    original = market_ranking.request_json_url
+    market_ranking.request_json_url = fake_json
+    try:
+        etf = market_ranking.fetch_ranking("etf", market="kospi", page=1, limit=5)
+        etn = market_ranking.fetch_ranking("etn", market="kospi", page=1, limit=5)
+        assert etf["rows"][0]["itemcode"] == "069500"
+        assert etn["rows"][0]["itemcode"] == "530036"
+    finally:
+        market_ranking.request_json_url = original
+
+
+def test_konex_api_rows_are_selected() -> None:
+    import market_ranking
+
+    original = market_ranking.request_json_url
+    market_ranking.request_json_url = lambda *args, **kwargs: {
+        "resultCode": "success",
+        "result": {"konexItemList": [{"itemcode": "496320", "itemname": "본시스템즈"}]},
+    }
+    try:
+        payload = market_ranking.fetch_ranking("konex", market="kospi", page=1, limit=5)
+        assert payload["rows"][0]["itemcode"] == "496320"
+    finally:
+        market_ranking.request_json_url = original
+
+
+def test_new_sise_menu_paths_are_mapped() -> None:
+    import market_ranking
+
+    fixture = """
+    <table class="type_2">
+      <tr><th>N</th><th>종목명</th><th>현재가</th></tr>
+      <tr><td>1</td><td>삼성전자</td><td>220,000</td></tr>
+    </table>
+    """
+    original = market_ranking.pc_text
+    market_ranking.pc_text = lambda *args, **kwargs: fixture
+    try:
+        for kind in [
+            "low-up",
+            "high-down",
+            "quant-high",
+            "quant-low",
+            "nxt-market-cap",
+            "nxt-volume",
+            "nxt-rise",
+            "nxt-fall",
+            "golden-cross",
+            "gap-up",
+            "disparity-overheat",
+            "sentiment-overheat",
+            "relative-strength-overheat",
+            "new-stock",
+        ]:
+            assert market_ranking.fetch_ranking(kind, market="kospi", page=1, limit=1)["rows"]
+    finally:
+        market_ranking.pc_text = original
+
+
+def test_popular_search_menu_path_is_mapped() -> None:
+    import market_ranking
+
+    fixture = """
+    <table class="type_5">
+      <tr><th>순위</th><th>종목명</th><th>검색비율</th></tr>
+      <tr><td>1</td><td>삼성전자</td><td>12.3%</td></tr>
+    </table>
+    """
+    original = market_ranking.pc_text
+    market_ranking.pc_text = lambda *args, **kwargs: fixture
+    try:
+        assert market_ranking.fetch_ranking("popular-search", market="kospi", page=1, limit=1)["rows"]
+    finally:
+        market_ranking.pc_text = original
+
+
+def test_investor_program_and_deal_tables_are_selected() -> None:
+    import market_ranking
+
+    fixture = """
+    <table class="type_1">
+      <tr><th>시간</th><th>개인</th><th>외국인</th></tr>
+      <tr><td>09:00</td><td>1</td><td>-1</td></tr>
+    </table>
+    """
+    original_pc_text = market_ranking.pc_text
+    original_today = market_ranking.today_yyyymmdd
+    market_ranking.pc_text = lambda *args, **kwargs: fixture
+    market_ranking.today_yyyymmdd = lambda: "20260427"
+    try:
+        assert market_ranking.fetch_ranking("investor-trend", market="kospi", page=1, limit=1)["rows"]
+        assert market_ranking.fetch_ranking("program-trend", market="kospi", page=1, limit=1)["rows"]
+        assert market_ranking.fetch_ranking("foreign-buy", market="kospi", page=1, limit=1)["rows"]
+        assert market_ranking.fetch_ranking("institution-buy", market="kospi", page=1, limit=1)["rows"]
+    finally:
+        market_ranking.pc_text = original_pc_text
+        market_ranking.today_yyyymmdd = original_today
+
+
+def test_chart_dates_are_validated() -> None:
+    import argparse
+    import stock_chart
+
+    assert stock_chart.normalize_yyyymmdd("20260427") == "20260427"
+    try:
+        stock_chart.normalize_yyyymmdd("2026-04-27")
+    except argparse.ArgumentTypeError:
+        pass
+    else:
+        raise AssertionError("dates must be accepted only as YYYYMMDD")
+
+
+def test_market_index_codes_route_to_pc_tables() -> None:
+    import indices
+
+    fixture = """
+    <table class="tbl_exchange" summary="고시환율 리스트">
+      <tr><th>구분</th><th>환율</th></tr>
+      <tr><td>현찰 사실때</td><td>1,503.35</td></tr>
+    </table>
+    """
+    original_pc_text = indices.pc_text
+    calls = []
+
+    def fake_pc_text(path, params=None, **kwargs):
+        calls.append((path, params or {}))
+        return fixture
+
+    indices.pc_text = fake_pc_text
+    try:
+        payload = indices.fetch_index("FX_USDKRW", include_chart=False, period="day", start=None, end=None, limit=1)
+        assert payload["source"] == "finance.naver.com public market-index HTML table"
+        assert payload["tables"][0]["rows"][0]["구분"] == "현찰 사실때"
+        indices.fetch_index("FX_USDJPY", include_chart=False, period="day", start=None, end=None, limit=1)
+        indices.fetch_index("IRR_CD91", include_chart=False, period="day", start=None, end=None, limit=1)
+        indices.fetch_index("OIL_GSL", include_chart=False, period="day", start=None, end=None, limit=1)
+        indices.fetch_index("CMDT_GC", include_chart=False, period="day", start=None, end=None, limit=1)
+        assert calls[-4][0] == "/marketindex/worldExchangeDetail.naver"
+        assert calls[-3][0] == "/marketindex/interestDetail.naver"
+        assert calls[-2][0] == "/marketindex/oilDetail.naver"
+        assert calls[-1][0] == "/marketindex/worldGoldDetail.naver"
+    finally:
+        indices.pc_text = original_pc_text
+
+
+def test_stock_trend_mobile_payload_is_selected() -> None:
+    import stock_trend
+
+    original = stock_trend.front_json
+    stock_trend.front_json = lambda *args, **kwargs: {"dealTrendInfos": [{"localDate": "20260427"}]}
+    try:
+        payload = stock_trend.fetch_trend("005930", page=1, limit=1)
+        assert payload["rows"][0]["localDate"] == "20260427"
+    finally:
+        stock_trend.front_json = original
+
+
+def test_research_relative_detail_links_are_attached() -> None:
+    import research
+
+    html = '<a href="company_read.naver?nid=91969&page=1">하반기부터 다시 많아질 이야기거리</a>'
+    rows = [{"제목": "하반기부터 다시 많아질 이야기거리"}]
+    research._attach_links(rows, html)
+    assert rows[0]["detailUrl"] == "/research/company_read.naver?nid=91969&page=1"
+
+
+def test_news_search_requires_query_and_fetches_rows() -> None:
+    import news
+
+    original = news.pc_text
+    news.pc_text = lambda *args, **kwargs: '<a href="/news/news_read.naver?article_id=1">삼성전자 기사</a>'
+    try:
+        payload = news.fetch_news_search("삼성전자", page=1, limit=1)
+        assert payload["rows"][0]["title"] == "삼성전자 기사"
+    finally:
+        news.pc_text = original
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

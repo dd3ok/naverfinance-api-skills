@@ -1,0 +1,4 @@
+interface:
+  display_name: "NaverFinance Web API"
+  short_description: "Unofficial read-only NaverFinance/Npay Stock public data"
+  default_prompt: "Use $naverfinance-web-api to fetch a compact quote, chart, news, market ranking, or market-index table from public NaverFinance/Npay Stock pages."
