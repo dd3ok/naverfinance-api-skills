@@ -1,6 +1,6 @@
 # Script Cookbook
 
-## Common Lookups
+## 자주 쓰는 조회
 
 ```bash
 python3 scripts/stock_summary.py --code 005930
@@ -49,28 +49,28 @@ python3 scripts/news.py --kind search --query 삼성전자 --page 1 --limit 10
 python3 scripts/financials.py --code 005930 --kind overview
 ```
 
-## Output
+## 출력
 
-All scripts default to JSON. Use `--output path.json` to write output to a file.
+모든 스크립트는 기본적으로 JSON을 출력합니다. 파일로 저장하려면 `--output path.json`을 사용합니다.
 
-## Market Ranking Kinds
+## Market Ranking Kind
 
 `konex`, `market-cap`, `volume`, `quant-high`, `quant-low`, `rise`, `fall`, `steady`, `upper`, `lower`, `low-up`, `high-down`, `etf`, `etn`, `dividend`, `foreign-hold`, `theme`, `upjong`, `group`, `investor-trend`, `foreign-buy`, `foreign-sell`, `institution-buy`, `institution-sell`, `program-trend`, `deposit`, `new-stock`, `market3`, `ipo`, `nxt-market-cap`, `nxt-volume`, `nxt-rise`, `nxt-fall`, `management`, `trading-halt`, `investment-alert`, `popular-search`, `golden-cross`, `gap-up`, `disparity-overheat`, `sentiment-overheat`, `relative-strength-overheat`, `report`, `short-trade`.
 
-Use `--page N` for list pages. For `theme`, `upjong`, and `group`, list rows include `detailNo` and `detailUrl`; pass `--detail-no <no>` with the same `--kind` to fetch related stocks from `sise_group_detail.naver`.
+목록 page에는 `--page N`을 사용합니다. `theme`, `upjong`, `group`의 목록 row에는 `detailNo`와 `detailUrl`이 들어 있습니다. 같은 `--kind`와 함께 `--detail-no <no>`를 넘기면 `sise_group_detail.naver`에서 관련 종목을 조회합니다.
 
-`report` returns public disclosure tab links. `short-trade` returns the KRX iframe URL embedded by Naver because the detailed short-selling table is served by KRX inside the page.
+`report`는 공개 공시 tab link를 반환합니다. `short-trade`는 Naver page 안에 embedded된 KRX iframe URL을 반환합니다. 상세 공매도 표가 page 내부 KRX iframe에서 제공되기 때문입니다.
 
 ## World, Market Index, Research, News
 
-- `world.py --kind overview|index|hours`; common symbols include `nasdaq`, `dow`, `sp500`, `nikkei225`, or raw symbols like `NAS@IXIC`.
-- `marketindex.py --kind overview|exchange-list|detail`; detail codes include `FX_USDKRW`, `FX_USDJPY`, `OIL_CL`, `OIL_GSL`, `CMDT_GC`, `GOLD_KRX`, `IRR_CD91`, and similar Naver marketindex codes.
+- `world.py --kind overview|index|hours`; 자주 쓰는 symbol은 `nasdaq`, `dow`, `sp500`, `nikkei225` 또는 `NAS@IXIC` 같은 원본 symbol입니다.
+- `marketindex.py --kind overview|exchange-list|detail`; detail code에는 `FX_USDKRW`, `FX_USDJPY`, `OIL_CL`, `OIL_GSL`, `CMDT_GC`, `GOLD_KRX`, `IRR_CD91` 등 Naver marketindex code가 들어갑니다.
 - `research.py --kind market-info|invest|company|industry|economy|debenture`.
-- `news.py --kind flash|main|market|analysis|world|bond|memo|fx|rank|photo|tv|notice|search`; `stock` and `disclosure` still require `--code`, and `search` requires `--query`.
+- `news.py --kind flash|main|market|analysis|world|bond|memo|fx|rank|photo|tv|notice|search`; `stock`과 `disclosure`는 `--code`가 필요하고, `search`는 `--query`가 필요합니다.
 
-## Date Formats
+## 날짜 형식
 
-- Mobile chart endpoints use `YYYYMMDD0000`.
-- Legacy `siseJson` uses `YYYYMMDD`.
-- Bundled chart CLIs accept date arguments as `YYYYMMDD`.
-- PC pages often display dates as `YYYY.MM.DD`.
+- Mobile chart endpoint는 `YYYYMMDD0000`을 사용합니다.
+- Legacy `siseJson`은 `YYYYMMDD`를 사용합니다.
+- Bundled chart CLI는 날짜 인자를 `YYYYMMDD`로 받습니다.
+- PC page는 날짜를 `YYYY.MM.DD`로 표시하는 경우가 많습니다.

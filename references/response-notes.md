@@ -1,9 +1,9 @@
-# Response Notes
+# 응답 메모
 
-- Make clear that data comes from public NaverFinance/Npay Stock web pages and undocumented web endpoints, not an official API.
-- For prices, include `localTradedAt`, market status, or response timestamp when present.
-- Preserve Naver's strings for status values such as `PREOPEN`, `TRADING`, and `UNCHANGED`; add a short Korean/English explanation only if useful.
-- For mobile integration payloads, avoid dumping everything. Summarize `totalInfos`, `dealTrendInfos`, `researches`, `industryCompareInfo`, `consensusInfo`, and `irScheduleInfo` separately.
-- For PC table pages, skip spacer rows and rows without meaningful cells.
-- For Wisereport, keep labels as displayed because accounting table structures vary by company and reporting basis.
-- Never present Naver AI briefing or news snippets as verified facts; identify them as Naver-provided content.
+- 데이터 출처가 공식 API가 아니라 공개 NaverFinance/Npay Stock web page와 undocumented web endpoint임을 분명히 합니다.
+- 가격 데이터에는 값이 있으면 `localTradedAt`, market status, response timestamp를 함께 표시합니다.
+- `PREOPEN`, `TRADING`, `UNCHANGED` 같은 Naver status 문자열은 보존합니다. 필요할 때만 짧은 한국어/영어 설명을 덧붙입니다.
+- mobile integration payload는 전체 dump를 피하고 `totalInfos`, `dealTrendInfos`, `researches`, `industryCompareInfo`, `consensusInfo`, `irScheduleInfo`를 나누어 요약합니다.
+- PC table page에서는 spacer row와 의미 있는 cell이 없는 row를 건너뜁니다.
+- Wisereport는 회사와 회계 기준에 따라 table 구조가 달라지므로 화면에 표시된 label을 유지합니다.
+- Naver AI briefing이나 news snippet을 검증된 사실처럼 표현하지 않습니다. Naver가 제공한 content임을 식별합니다.

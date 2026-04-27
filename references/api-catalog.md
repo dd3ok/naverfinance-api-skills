@@ -1,42 +1,42 @@
-# API Catalog
+# API 카탈로그
 
-Undocumented Naver endpoints are unstable. Re-check current page traffic when accuracy matters.
+문서화되지 않은 Naver endpoint는 안정성이 보장되지 않습니다. 정확도가 중요하면 현재 page traffic을 다시 확인하세요.
 
 ## Mobile JSON
 
 Base: `https://m.stock.naver.com/front-api`
 
-| Domain | Pattern | Notes |
+| 영역 | Pattern | 메모 |
 | --- | --- | --- |
-| Domestic stock basic | `/stock/domestic/basic?code=005930&endType=stock` | Summary quote, exchange, chart image URLs, NXT over-market info. |
-| Domestic stock integration | `/stock/domestic/integration?code=005930&endType=stock` | Key metrics, investor trend sample, research list, peer comparison, consensus/IR snippets. |
-| Domestic stock trend | `/stock/domestic/trend?code=005930` | Investor trend by date; use `scripts/stock_trend.py`. |
-| Domestic disclosure | `/stock/domestic/disclosure?code=005930&page=1&pageSize=20` | Public disclosure list. |
-| Domestic stock list | `/stock/domestic/stockList?sortType=marketValue&category=KOSPI&page=1&pageSize=20` | Rankings/lists. Sorts include `marketValue`, `up`, `down`, `quantTop`, `priceTop`, `searchTop`, `newStock`, `management`, `high52week`, `low52week`, `dividend`, `etf`, `etn`, `konex`. |
-| Stock/index chart | `/chart/domestic/stock/end?code=005930&chartInfoType=item&scriptChartType=candleDay` | `chartInfoType`: `item` or `index`; chart types include `day`, `candleMinuteFive`, `candleDay`, `candleWeek`, `candleMonth`, `areaMonthThree`, `areaYear`, `areaYearThree`, `areaYearFive`, `areaYearTen`. |
-| Domestic index basic | `/stock/domestic/basic?code=KOSPI&endType=index` | Example codes: `KOSPI`, `KOSDAQ`, `KPI200`. |
-| Domestic index integration | `/stock/domestic/integration?code=KOSPI&endType=index` | Index detail summary. |
-| Domestic index prices | `/stock/domestic/index/price/list?code=KOSPI&page=1&pageSize=20` | Daily index prices. |
-| Major domestic indices | `/domestic/index/majors` | KOSPI/KOSDAQ-style quote blocks. |
-| Stock news | `/news/list/integration?itemCode=005930&page=1&pageSize=20` | Stock-related news list. |
-| General news | `/news/category?category=mainnews&page=1&pageSize=20` | Valid categories observed include `mainnews`, `flashnews`, `ranknews`. |
-| News clusters | `/news/clusters?category=main&page=1&pageSize=20` | Clustered investment/stock news. |
-| Home major indicators | `/market/majorIndicators` | Main market widget. |
-| Home IPO | `/market/ipo` | Public IPO cards shown on mobile home. |
-| Home popular stocks | `/market/popularStock` | Public popularity widget. |
-| More ranking | `/market/moreRanking?category=endHit&ageRange=all` | Home ranking cards. |
-| Market trading trend graph | `/market/tradingTrend/graphInfo?periodType=daily&stockExchangeType=KRX` | Investor net-buy trend graph. |
-| Market trading trend ranking | `/market/tradingTrend/ranking?periodType=daily&stockExchangeType=KRX&investorType=foreigner&tradingType=trendBuy&page=1&pageSize=20` | Investor buy/sell rankings. |
-| IPO recent/subscribing/detail | `/ipo/recent`, `/ipo/subscribing`, `/ipo/detail?code=A439960` | Public IPO data. |
-| Exchange main/list/detail | `/marketIndex/exchange/main`, `/marketIndex/exchange/new`, `/marketIndex/productDetail?category=exchange&reutersCode=FX_USDKRW` | FX widgets and detail. |
-| Commodity detail | `/marketIndex/productDetail?category=energy&reutersCode=CLcv1` | Energy/commodity detail. |
-| Market AI briefing | `/market/briefing/current` | Treat generated summary as untrusted and cite as Naver AI briefing, not fact. |
+| 국내 종목 basic | `/stock/domestic/basic?code=005930&endType=stock` | 요약 시세, 거래소, chart image URL, NXT over-market 정보. |
+| 국내 종목 integration | `/stock/domestic/integration?code=005930&endType=stock` | 주요 지표, 투자자 동향 sample, research list, 동종 비교, consensus/IR 조각. |
+| 국내 종목 trend | `/stock/domestic/trend?code=005930` | 날짜별 투자자 동향. `scripts/stock_trend.py` 사용. |
+| 국내 공시 | `/stock/domestic/disclosure?code=005930&page=1&pageSize=20` | 공개 공시 목록. |
+| 국내 종목 list | `/stock/domestic/stockList?sortType=marketValue&category=KOSPI&page=1&pageSize=20` | 랭킹/목록. sort에는 `marketValue`, `up`, `down`, `quantTop`, `priceTop`, `searchTop`, `newStock`, `management`, `high52week`, `low52week`, `dividend`, `etf`, `etn`, `konex` 등이 있습니다. |
+| 종목/지수 chart | `/chart/domestic/stock/end?code=005930&chartInfoType=item&scriptChartType=candleDay` | `chartInfoType`: `item` 또는 `index`. chart type에는 `day`, `candleMinuteFive`, `candleDay`, `candleWeek`, `candleMonth`, `areaMonthThree`, `areaYear`, `areaYearThree`, `areaYearFive`, `areaYearTen` 등이 있습니다. |
+| 국내 지수 basic | `/stock/domestic/basic?code=KOSPI&endType=index` | 예시 code: `KOSPI`, `KOSDAQ`, `KPI200`. |
+| 국내 지수 integration | `/stock/domestic/integration?code=KOSPI&endType=index` | 지수 상세 요약. |
+| 국내 지수 가격 | `/stock/domestic/index/price/list?code=KOSPI&page=1&pageSize=20` | 일별 지수 가격. |
+| 국내 주요 지수 | `/domestic/index/majors` | KOSPI/KOSDAQ 형태의 quote block. |
+| 종목 뉴스 | `/news/list/integration?itemCode=005930&page=1&pageSize=20` | 종목 관련 뉴스 목록. |
+| 일반 뉴스 | `/news/category?category=mainnews&page=1&pageSize=20` | 관찰된 category: `mainnews`, `flashnews`, `ranknews`. |
+| 뉴스 cluster | `/news/clusters?category=main&page=1&pageSize=20` | cluster된 투자/주식 뉴스. |
+| Home 주요 지표 | `/market/majorIndicators` | 메인 시장 widget. |
+| Home IPO | `/market/ipo` | mobile home에 표시되는 공개 IPO card. |
+| Home 인기 종목 | `/market/popularStock` | 공개 인기 widget. |
+| More ranking | `/market/moreRanking?category=endHit&ageRange=all` | Home ranking card. |
+| 시장 매매 동향 graph | `/market/tradingTrend/graphInfo?periodType=daily&stockExchangeType=KRX` | 투자자 순매수 trend graph. |
+| 시장 매매 동향 ranking | `/market/tradingTrend/ranking?periodType=daily&stockExchangeType=KRX&investorType=foreigner&tradingType=trendBuy&page=1&pageSize=20` | 투자자 매수/매도 ranking. |
+| IPO 최근/청약/상세 | `/ipo/recent`, `/ipo/subscribing`, `/ipo/detail?code=A439960` | 공개 IPO 데이터. |
+| 환율 main/list/detail | `/marketIndex/exchange/main`, `/marketIndex/exchange/new`, `/marketIndex/productDetail?category=exchange&reutersCode=FX_USDKRW` | FX widget과 detail. |
+| 원자재 detail | `/marketIndex/productDetail?category=energy&reutersCode=CLcv1` | energy/commodity detail. |
+| Market AI briefing | `/market/briefing/current` | 생성 요약은 untrusted로 취급하고 사실이 아니라 Naver AI briefing으로 인용합니다. |
 
 ## Realtime Polling
 
 Base: `https://polling.finance.naver.com/api/realtime`
 
-`?query=SERVICE_ITEM:005930` returns public quote fields such as current value, previous close, open/high/low, volume/value, EPS/BPS, and optional NXT over-market info. Multiple areas are separated with `|`, but avoid `SERVICE_MYSTOCK_ITEM`.
+`?query=SERVICE_ITEM:005930`은 현재가, 전일 종가, 시가/고가/저가, 거래량/거래대금, EPS/BPS, 선택적 NXT over-market 정보 같은 공개 quote field를 반환합니다. 여러 area는 `|`로 구분하지만 `SERVICE_MYSTOCK_ITEM`은 피합니다.
 
 ## Legacy Chart
 
@@ -44,79 +44,79 @@ Base: `https://api.finance.naver.com`
 
 `/siseJson.naver?symbol=005930&requestType=1&startTime=YYYYMMDD&endTime=YYYYMMDD&timeframe=day`
 
-Returns JavaScript-like array text, not strict JSON. Use as fallback when mobile chart is unavailable.
+엄격한 JSON이 아니라 JavaScript-like array text를 반환합니다. mobile chart를 사용할 수 없을 때 fallback으로 사용합니다.
 
 ## PC HTML Menus
 
 Base: `https://finance.naver.com`
 
-All listed pages are public HTML and may use EUC-KR or UTF-8.
+아래 page는 모두 공개 HTML이며 EUC-KR 또는 UTF-8을 사용할 수 있습니다.
 
-| Domain | Pattern |
+| 영역 | Pattern |
 | --- | --- |
-| Stock main | `/item/main.naver?code={code}` |
-| Stock price page | `/item/sise.naver?code={code}` |
-| Daily prices iframe | `/item/sise_day.naver?code={code}&page={page}` |
-| Intraday prices iframe | `/item/sise_time.naver?code={code}&thistime=YYYYMMDD000000&page={page}` |
-| Investor trend | `/item/frgn.naver?code={code}&page={page}` |
-| News list | `/item/news_news.naver?code={code}&page={page}&clusterId=` |
-| Disclosure list | `/item/news_notice.naver?code={code}&page={page}` |
-| Short trade | `/item/short_trade.naver?code={code}` |
-| Index detail | `/sise/sise_index.naver?code=KOSPI|KOSDAQ|FUT|KPI100|KPI200|KVALUE` |
+| 종목 main | `/item/main.naver?code={code}` |
+| 종목 시세 page | `/item/sise.naver?code={code}` |
+| 일별 시세 iframe | `/item/sise_day.naver?code={code}&page={page}` |
+| 시간별 시세 iframe | `/item/sise_time.naver?code={code}&thistime=YYYYMMDD000000&page={page}` |
+| 투자자별 매매 동향 | `/item/frgn.naver?code={code}&page={page}` |
+| 뉴스 목록 | `/item/news_news.naver?code={code}&page={page}&clusterId=` |
+| 공시 목록 | `/item/news_notice.naver?code={code}&page={page}` |
+| 공매도 거래 | `/item/short_trade.naver?code={code}` |
+| 지수 상세 | `/sise/sise_index.naver?code=KOSPI|KOSDAQ|FUT|KPI100|KPI200|KVALUE` |
 | KONEX | `/sise/konex.naver`, `/api/sise/konexItemList.nhn` |
-| Market cap | `/sise/sise_market_sum.naver?sosok=0&page=1` |
-| NXT market cap | `/sise/nxt_sise_market_sum.naver?page=1` |
-| Volume/rise/fall | `/sise/sise_quant.naver`, `/sise/sise_quant_high.naver`, `/sise/sise_quant_low.naver`, `/sise/sise_rise.naver`, `/sise/sise_steady.naver`, `/sise/sise_fall.naver`, `/sise/sise_upper.naver`, `/sise/sise_lower.naver`, `/sise/sise_low_up.naver`, `/sise/sise_high_down.naver` |
-| ETF/ETN/dividend | `/sise/etf.naver`, `/api/sise/etfItemList.nhn`, `/sise/etn.naver`, `/api/sise/etnItemList.nhn`, `/sise/dividend_list.naver` |
-| Groups/themes | `/sise/sise_group.naver?type=upjong`, `/sise/sise_group.naver?type=group`, `/sise/theme.naver?page=...`, `/sise/sise_group_detail.naver?type=upjong|theme|group&no=...` |
-| Investor market trend | `/sise/sise_trans_style.naver?sosok=01`, `/sise/investorDealTrendDay.naver?bizdate=YYYYMMDD&sosok=01` |
-| Foreign/institution rank | `/sise/sise_deal_rank.naver?investor_gubun=9000`, `/sise/sise_deal_rank_iframe.naver?sosok=01&investor_gubun=9000&type=buy|sell` |
-| Program trading | `/sise/sise_program.naver?sosok=01`, `/sise/programDealTrendDay.naver?bizdate=YYYYMMDD&sosok=01` |
-| Money flow/new listings | `/sise/sise_deposit.naver`, `/sise/sise_new_stock.naver` |
-| OTC/IPO | `/sise/market3news_list.naver`, `/sise/ipo.naver` |
-| NXT lists | `/sise/nxt_sise_market_sum.naver`, `/sise/nxt_sise_quant.naver`, `/sise/nxt_sise_rise.naver`, `/sise/nxt_sise_fall.naver` |
-| Caution/halts/management | `/sise/management.naver`, `/sise/trading_halt.naver`, `/sise/investment_alert.naver?type=caution` |
-| Popular searches | `/sise/lastsearch2.naver` |
-| Technical signals | `/sise/item_gold.naver`, `/sise/item_gap.naver`, `/sise/item_igyuk.naver`, `/sise/item_overheating_1.naver`, `/sise/item_overheating_2.naver` |
-| Disclosure/short sale | `/sise/report.naver`, `/sise/short_trade.naver` with KRX iframe |
+| 시가총액 | `/sise/sise_market_sum.naver?sosok=0&page=1` |
+| NXT 시가총액 | `/sise/nxt_sise_market_sum.naver?page=1` |
+| 거래량/상승/하락 | `/sise/sise_quant.naver`, `/sise/sise_quant_high.naver`, `/sise/sise_quant_low.naver`, `/sise/sise_rise.naver`, `/sise/sise_steady.naver`, `/sise/sise_fall.naver`, `/sise/sise_upper.naver`, `/sise/sise_lower.naver`, `/sise/sise_low_up.naver`, `/sise/sise_high_down.naver` |
+| ETF/ETN/배당 | `/sise/etf.naver`, `/api/sise/etfItemList.nhn`, `/sise/etn.naver`, `/api/sise/etnItemList.nhn`, `/sise/dividend_list.naver` |
+| 그룹/테마 | `/sise/sise_group.naver?type=upjong`, `/sise/sise_group.naver?type=group`, `/sise/theme.naver?page=...`, `/sise/sise_group_detail.naver?type=upjong|theme|group&no=...` |
+| 시장 투자자 동향 | `/sise/sise_trans_style.naver?sosok=01`, `/sise/investorDealTrendDay.naver?bizdate=YYYYMMDD&sosok=01` |
+| 외국인/기관 rank | `/sise/sise_deal_rank.naver?investor_gubun=9000`, `/sise/sise_deal_rank_iframe.naver?sosok=01&investor_gubun=9000&type=buy|sell` |
+| 프로그램 매매 | `/sise/sise_program.naver?sosok=01`, `/sise/programDealTrendDay.naver?bizdate=YYYYMMDD&sosok=01` |
+| 자금 흐름/신규 상장 | `/sise/sise_deposit.naver`, `/sise/sise_new_stock.naver` |
+| 장외/IPO | `/sise/market3news_list.naver`, `/sise/ipo.naver` |
+| NXT 목록 | `/sise/nxt_sise_market_sum.naver`, `/sise/nxt_sise_quant.naver`, `/sise/nxt_sise_rise.naver`, `/sise/nxt_sise_fall.naver` |
+| 관리/거래정지/투자경고 | `/sise/management.naver`, `/sise/trading_halt.naver`, `/sise/investment_alert.naver?type=caution` |
+| 인기검색 | `/sise/lastsearch2.naver` |
+| 기술적 신호 | `/sise/item_gold.naver`, `/sise/item_gap.naver`, `/sise/item_igyuk.naver`, `/sise/item_overheating_1.naver`, `/sise/item_overheating_2.naver` |
+| 공시/공매도 | `/sise/report.naver`, KRX iframe을 포함한 `/sise/short_trade.naver` |
 | Market index home | `/marketindex/` |
-| Market index exchange list | `/marketindex/exchangeList.naver` |
-| Exchange detail | `/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW` |
-| Interest/oil/gold/material | `/marketindex/interestDetail.naver`, `/marketindex/worldExchangeDetail.naver`, `/marketindex/worldOilDetail.naver`, `/marketindex/oilDetail.naver`, `/marketindex/worldGoldDetail.naver`, `/marketindex/goldDetail.naver`, `/marketindex/materialDetail.naver` |
-| World overview/index/hours | `/world/`, `/world/sise.naver?symbol=NAS@IXIC&fdtc=0`, `/world/guide_time_chart.naver` |
-| Research reports | `/research/market_info_list.naver`, `/research/invest_list.naver`, `/research/company_list.naver`, `/research/industry_list.naver`, `/research/economy_list.naver`, `/research/debenture_list.naver` |
-| News menus | `/news/news_list.naver`, `/news/mainnews.naver`, `/news/market_notice.naver`, `/news/news_search.naver`, `/news/news_read.naver` |
+| 환율 목록 | `/marketindex/exchangeList.naver` |
+| 환율 상세 | `/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW` |
+| 금리/유가/금/원자재 | `/marketindex/interestDetail.naver`, `/marketindex/worldExchangeDetail.naver`, `/marketindex/worldOilDetail.naver`, `/marketindex/oilDetail.naver`, `/marketindex/worldGoldDetail.naver`, `/marketindex/goldDetail.naver`, `/marketindex/materialDetail.naver` |
+| World 개요/지수/시간 | `/world/`, `/world/sise.naver?symbol=NAS@IXIC&fdtc=0`, `/world/guide_time_chart.naver` |
+| 리서치 report | `/research/market_info_list.naver`, `/research/invest_list.naver`, `/research/company_list.naver`, `/research/industry_list.naver`, `/research/economy_list.naver`, `/research/debenture_list.naver` |
+| 뉴스 메뉴 | `/news/news_list.naver`, `/news/mainnews.naver`, `/news/market_notice.naver`, `/news/news_search.naver`, `/news/news_read.naver` |
 
-## Wisereport Company Analysis
+## Wisereport 기업분석
 
 Base: `https://navercomp.wisereport.co.kr/v2`
 
-| Domain | Pattern |
+| 영역 | Pattern |
 | --- | --- |
-| Company status | `/company/c1010001.aspx?cmp_cd={code}` |
-| Overview | `/company/c1020001.aspx?cmp_cd={code}` |
-| Financial analysis | `/company/c1030001.aspx?cmp_cd={code}` |
-| Investment indicators | `/company/c1040001.aspx?cmp_cd={code}` |
+| 기업 현황 | `/company/c1010001.aspx?cmp_cd={code}` |
+| 개요 | `/company/c1020001.aspx?cmp_cd={code}` |
+| 재무분석 | `/company/c1030001.aspx?cmp_cd={code}` |
+| 투자지표 | `/company/c1040001.aspx?cmp_cd={code}` |
 | Consensus | `/company/c1050001.aspx?cmp_cd={code}` |
-| Industry analysis | `/company/c1060001.aspx?cmp_cd={code}` |
-| Shareholder info | `/company/c1070001.aspx?cmp_cd={code}` |
-| Sector analysis | `/company/c1090001.aspx?cmp_cd={code}` |
-| Overview chart AJAX | `/company/ajax/cF1001.aspx` with `flag`, `cmp_cd`, fresh `encparam` |
-| Overview financial expansion | `/company/ajax/cF1001.aspx` with `cmp_cd`, `fin_typ`, `freq_typ`, fresh `encparam` |
-| Consensus summary | `/company/cF1002.aspx` with `cmp_cd`, `finGubun`, optional `frq` |
-| Financial statements JSON | `/company/cF3002.aspx` with `cmp_cd`, `rpt`, `finGubun`, `frqTyp`, `frq`, fresh `encparam` |
-| Investment indicators JSON | `/company/cF4002.aspx` with `cmp_cd`, `rpt`, `finGubun`, `frqTyp`, `frq`, fresh `encparam` |
+| 업종분석 | `/company/c1060001.aspx?cmp_cd={code}` |
+| 주주정보 | `/company/c1070001.aspx?cmp_cd={code}` |
+| Sector 분석 | `/company/c1090001.aspx?cmp_cd={code}` |
+| 개요 chart AJAX | `/company/ajax/cF1001.aspx` with `flag`, `cmp_cd`, fresh `encparam` |
+| 개요 재무 확장 | `/company/ajax/cF1001.aspx` with `cmp_cd`, `fin_typ`, `freq_typ`, fresh `encparam` |
+| Consensus 요약 | `/company/cF1002.aspx` with `cmp_cd`, `finGubun`, optional `frq` |
+| 재무제표 JSON | `/company/cF3002.aspx` with `cmp_cd`, `rpt`, `finGubun`, `frqTyp`, `frq`, fresh `encparam` |
+| 투자지표 JSON | `/company/cF4002.aspx` with `cmp_cd`, `rpt`, `finGubun`, `frqTyp`, `frq`, fresh `encparam` |
 | Consensus data | `/company/ajax/c1050001_data.aspx` with `flag`, `cmp_cd`, `finGubun`, `frq`, `sDT` |
-| Consensus charts | `/company/ajax/cF5001.aspx`, `/company/ajax/cF5002.aspx` |
-| Industry comparison | `/company/ajax/cF6001.aspx`, `/company/cF6002.aspx`, `/company/chart/c1060001.aspx` |
-| Sector comparison | `/company/ajax/cF9001.aspx`, `/company/chart/c1090001.aspx` |
+| Consensus chart | `/company/ajax/cF5001.aspx`, `/company/ajax/cF5002.aspx` |
+| 업종 비교 | `/company/ajax/cF6001.aspx`, `/company/cF6002.aspx`, `/company/chart/c1060001.aspx` |
+| Sector 비교 | `/company/ajax/cF9001.aspx`, `/company/chart/c1090001.aspx` |
 | Band chart | `/common/BandChart3.aspx?cmp_cd={code}&gubun={gubun}` |
 
-Important Wisereport parameters:
+중요한 Wisereport parameter:
 
 - `finGubun`/`fingubun`: `MAIN`, `IFRSS`, `IFRSL`, `GAAPS`, `GAAPL`.
 - `fin_typ`: `MAIN=0`, `GAAPS=1`, `GAAPL=2`, `IFRSS=3`, `IFRSL=4`.
-- `frqTyp`: `0` annual, `1` quarterly. Some endpoints use `frq=Y|Q`.
-- `encparam`, `hidDT`, and sector codes are page-specific. Scrape them fresh from the parent page; do not hard-code.
-- Some JSON endpoints return `Content-Type: text/html` or JSON strings inside JSON. Detect by payload content and parse twice where needed.
-- Current bundled `financials.py` fetches public Wisereport HTML pages. AJAX endpoints above are cataloged for future inspection and should be re-verified before adding a CLI wrapper.
+- `frqTyp`: `0` annual, `1` quarterly. 일부 endpoint는 `frq=Y|Q`를 사용합니다.
+- `encparam`, `hidDT`, sector code는 page-specific입니다. parent page에서 fresh하게 scrape하고 hard-code하지 마세요.
+- 일부 JSON endpoint는 `Content-Type: text/html`을 반환하거나 JSON 안에 JSON string을 넣습니다. payload content를 보고 필요하면 두 번 parse합니다.
+- 현재 bundled `financials.py`는 공개 Wisereport HTML page를 가져옵니다. 위 AJAX endpoint는 향후 검토용 catalog이며 CLI wrapper를 추가하기 전에 다시 검증해야 합니다.
