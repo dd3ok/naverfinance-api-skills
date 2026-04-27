@@ -1,7 +1,6 @@
 # Naver Finance API Skill
 
 [![Naver Finance API Skills CI](https://github.com/dd3ok/naverfinance-api-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/dd3ok/naverfinance-api-skills/actions/workflows/ci.yml)
-[![Latest release](https://img.shields.io/github/v/release/dd3ok/naverfinance-api-skills?sort=semver)](https://github.com/dd3ok/naverfinance-api-skills/releases/latest)
 
 > 30초 요약: 네이버 금융(Naver Finance)과 네이버페이 증권(Npay Stock)의 공개 read-only 주식/시장 데이터를 조회하는 Agent Skill입니다.  
 > 국내 종목 시세, 차트, 뉴스, 공시, 지수, 환율, 원자재, 시장 랭킹, Wisereport 기업분석 데이터를 다룹니다.  
