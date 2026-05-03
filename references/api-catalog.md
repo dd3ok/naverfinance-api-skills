@@ -91,7 +91,7 @@ Base: `https://finance.naver.com`
 | 환율 목록 | `/marketindex/exchangeList.naver` |
 | 환율 상세 | `/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW` |
 | 금리/유가/금/원자재 | `/marketindex/interestDetail.naver`, `/marketindex/worldExchangeDetail.naver`, `/marketindex/worldOilDetail.naver`, `/marketindex/oilDetail.naver`, `/marketindex/worldGoldDetail.naver`, `/marketindex/goldDetail.naver`, `/marketindex/materialDetail.naver` |
-| World 개요/지수/시간 | `/world/`, `/world/sise.naver?symbol=NAS@IXIC&fdtc=0`, `/world/guide_time_chart.naver` |
+| World 개요/지수/시간 | `/world/`, `/world/sise.naver?symbol=NAS@IXIC&fdtc=0`, `/world/guide_time_list.naver`, `/world/guide_time_chart.naver` |
 | 리서치 report | `/research/market_info_list.naver`, `/research/invest_list.naver`, `/research/company_list.naver`, `/research/industry_list.naver`, `/research/economy_list.naver`, `/research/debenture_list.naver` |
 | 뉴스 메뉴 | `/news/news_list.naver`, `/news/mainnews.naver`, `/news/market_notice.naver`, `/news/news_search.naver`, `/news/news_read.naver` |
 

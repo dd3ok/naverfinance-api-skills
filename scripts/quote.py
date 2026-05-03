@@ -32,7 +32,13 @@ def fetch_quotes(codes: list[str]) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--code", action="append", required=True, type=normalize_stock_code)
+    parser.add_argument(
+        "--code",
+        action="append",
+        required=True,
+        type=normalize_stock_code,
+        help="Six-digit stock code. Repeat --code to fetch multiple quotes.",
+    )
     add_output_argument(parser)
     args = parser.parse_args()
     emit_output(render_json(fetch_quotes(args.code)), args.output)

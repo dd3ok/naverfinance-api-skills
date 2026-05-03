@@ -48,6 +48,7 @@ def main() -> int:
     test_investor_program_and_deal_tables_are_selected()
     test_chart_dates_are_validated()
     test_market_index_codes_route_to_pc_tables()
+    test_world_hours_rowspan_rows_are_normalized()
     test_stock_trend_mobile_payload_is_selected()
     test_research_relative_detail_links_are_attached()
     test_news_search_requires_query_and_fetches_rows()
@@ -304,6 +305,31 @@ def test_market_index_codes_route_to_pc_tables() -> None:
         assert calls[-1][0] == "/marketindex/worldGoldDetail.naver"
     finally:
         indices.pc_text = original_pc_text
+
+
+def test_world_hours_rowspan_rows_are_normalized() -> None:
+    import world
+
+    fixture = """
+    <table cellpadding="0" cellspacing="0">
+      <tr><th>대륙</th><th>국가</th><th>현지시간</th><th>한국시간</th><th>GMT 대비</th><th>DST 적용시간</th></tr>
+      <tr><th rowspan="2">아시아</th><td>한국</td><td>09:00~15:30</td><td>09:00~15:30</td><td>+9</td><td></td></tr>
+      <tr><td>호주</td><td>10:00~16:00</td><td>09:00~15:00</td><td>+10</td><td>08:00~14:00</td></tr>
+      <tr><th>미주</th><td>미국</td><td>09:30~16:00</td><td>23:30~06:00</td><td>-5</td><td>22:30~05:00</td></tr>
+    </table>
+    """
+    original = world.pc_text
+    world.pc_text = lambda *args, **kwargs: fixture
+    try:
+        payload = world.fetch_world("hours", symbol=None, page=1, limit=0)
+        assert payload["source"] == "finance.naver.com public world trading-hours table"
+        assert payload["rows"][0]["대륙"] == "아시아"
+        assert payload["rows"][1]["대륙"] == "아시아"
+        assert payload["rows"][1]["국가"] == "호주"
+        assert payload["rows"][2]["대륙"] == "미주"
+        assert payload["rows"][2]["DST 적용시간"] == "22:30~05:00"
+    finally:
+        world.pc_text = original
 
 
 def test_stock_trend_mobile_payload_is_selected() -> None:

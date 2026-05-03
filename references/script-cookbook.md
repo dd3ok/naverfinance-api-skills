@@ -53,6 +53,8 @@ python3 scripts/financials.py --code 005930 --kind overview
 
 모든 스크립트는 기본적으로 JSON을 출력합니다. 파일로 저장하려면 `--output path.json`을 사용합니다.
 
+PC HTML table 기반 출력은 공개 page 구조를 best-effort로 평탄화합니다. `marketindex.py --kind exchange-list`처럼 grouped header, 중복 header, iframe table이 섞인 page는 현재 화면과 함께 재확인하고, 정확한 column 의미가 중요하면 원본 page traffic/table 구조를 다시 점검하세요.
+
 ## Market Ranking Kind
 
 `konex`, `market-cap`, `volume`, `quant-high`, `quant-low`, `rise`, `fall`, `steady`, `upper`, `lower`, `low-up`, `high-down`, `etf`, `etn`, `dividend`, `foreign-hold`, `theme`, `upjong`, `group`, `investor-trend`, `foreign-buy`, `foreign-sell`, `institution-buy`, `institution-sell`, `program-trend`, `deposit`, `new-stock`, `market3`, `ipo`, `nxt-market-cap`, `nxt-volume`, `nxt-rise`, `nxt-fall`, `management`, `trading-halt`, `investment-alert`, `popular-search`, `golden-cross`, `gap-up`, `disparity-overheat`, `sentiment-overheat`, `relative-strength-overheat`, `report`, `short-trade`.
