@@ -1,4 +1,4 @@
-name: Naver Finance API Skills CI
+name: Naver Finance API Skill CI
 
 on:
   push:
